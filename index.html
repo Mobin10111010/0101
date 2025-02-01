@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>Bird</title>
+  
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
+    <title>Game Menu</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html, body {
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: url('https://i.postimg.cc/g0qnQbRq/Picsart-25-01-31-20-37-17-411.jpg') no-repeat center center;
+            background-size: cover;
+            position: relative;
+        }
+
+        .container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        /* دکمه پلی (بزرگ) */
+        .start-game-img {
+            width: 1200px;
+            cursor: pointer;
+            transition: transform 0.3s ease, filter 0.3s ease;
+        }
+
+        .start-game-img:hover {
+            transform: scale(1.1) rotate(2deg);
+            filter: brightness(1.2);
+        }
+
+        /* دکمه تنظیمات (سه خط ☰) */
+        .settings-container {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 100px;
+            cursor: pointer;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .settings-container:hover {
+            transform: scale(1.2);
+        }
+
+        /* منوی تنظیمات */
+        .submenu {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            width: 400px;
+            display: none;
+        }
+
+        .back-button {
+            margin-top: 20px;
+            padding: 20px 40px;
+            font-size: 24px;
+            background: #d32f2f;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: transform 0.2s ease, background 0.2s ease;
+        }
+
+        .back-button:hover {
+            transform: scale(1.1);
+            background: #b71c1c;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- موسیقی پس‌زمینه -->
+    <audio id="backgroundMusic" loop>
+        <source src="https://www.dropbox.com/scl/fi/4n9dj26yvlhjz0nl6fshn/8-bit-retro-game-music-233964.mp3?rlkey=dderhl30uije3oyu9iqfybxtl&raw=1" type="audio/mpeg">
+    </audio>
+
+    <div class="container">
+        <!-- منوی اصلی -->
+        <div id="menu">
+            <img src="https://i.postimg.cc/hPJ5kgcj/Picsart-25-01-31-16-52-46-967.png" class="start-game-img" onclick="playSound(); startGame()" alt="Start Game">
+            <div class="settings-container" onclick="playSound(); showSettings()">☰</div>
+        </div>
+
+        <!-- منوی تنظیمات -->
+        <div id="settingsMenu" class="submenu">
+            <h2>Settings</h2>
+            <label><input type="checkbox" id="musicToggle" onchange="toggleSound()"> Sound</label><br>
+            <button class="back-button" onclick="playSound(); backToMenu()">Back</button>
+        </div>
+    </div>
+
+    <script>
+        let soundEnabled = localStorage.getItem("soundEnabled") !== "false";
+        let backgroundMusic = document.getElementById("backgroundMusic");
+
+        function playSound() {
+            if (soundEnabled) {
+                let clickSound = new Audio("https://file.mediabaz.net/sound%20effect/transition/MediaBaz.net-Notifications%20and%20Buttons%20-01.mp3");
+                clickSound.play();
+            }
+        }
+
+        function startGame() {
+            window.location.href = "https://violet-sarena-90.tiiny.site"; // هدایت به صفحه بازی
+        }
+
+        function showSettings() {
+            document.getElementById('menu').classList.add('hidden');
+            document.getElementById('settingsMenu').style.display = "block";
+            document.getElementById("musicToggle").checked = !soundEnabled;
+        }
+
+        function backToMenu() {
+            document.getElementById('settingsMenu').style.display = "none";
+            document.getElementById('menu').classList.remove('hidden');
+        }
+
+        function toggleSound() {
+            soundEnabled = !document.getElementById('musicToggle').checked;
+            localStorage.setItem("soundEnabled", soundEnabled);
+            if (!soundEnabled) {
+                backgroundMusic.pause();
+            } else {
+                backgroundMusic.play().catch(error => console.log("مشکل در پخش موزیک:", error));
+            }
+        }
+
+        // بررسی وضعیت ذخیره‌شده در مرورگر
+        function checkSoundStatus() {
+            soundEnabled = localStorage.getItem("soundEnabled") !== "false";
+            if (!soundEnabled) {
+                backgroundMusic.pause();
+            } else {
+                backgroundMusic.play().catch(error => console.log("مشکل در پخش موزیک:", error));
+            }
+        }
+
+        // حل مشکل پخش خودکار در برخی مرورگرها
+        document.addEventListener("DOMContentLoaded", function () {
+            checkSoundStatus();
+        });
+
+        document.addEventListener("click", function () {
+            if (backgroundMusic.paused && soundEnabled) {
+                backgroundMusic.play().catch(error => console.log("مشکل در پخش موزیک:", error));
+            }
+        });
+    </script>
+
+</body>
+</html>
+<!-- partial -->
+  
+</body>
+</html>
